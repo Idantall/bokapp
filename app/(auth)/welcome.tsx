@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { typography, spacing, borderRadius, shadows } from '@/lib/theme';
@@ -19,8 +19,11 @@ export default function WelcomeScreen() {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.emoji}>⭐</Text>
-        <Text style={[styles.title, { color: colors.textPrimary }]}>UP!</Text>
+        <Image 
+          source={require('@/assets/images/logo.png')} 
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
           {t('welcome.subtitle', 'Track your journey to a balanced life')}
         </Text>
@@ -68,16 +71,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.xl,
   },
-  emoji: {
-    fontSize: 80,
-    marginBottom: spacing.lg,
-  },
-  title: {
-    fontSize: 48,
-    textAlign: 'center',
-    marginBottom: spacing.sm,
-    fontWeight: '700',
-    letterSpacing: 4,
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: spacing.xl,
   },
   subtitle: {
     ...typography.body,
