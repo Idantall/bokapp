@@ -39,8 +39,11 @@ export default function RegisterScreen() {
     if (error) {
       Alert.alert(t('auth.error', 'Error'), error.message);
     } else {
-      // Navigate to onboarding
-      router.replace('/(auth)/onboarding');
+      // Navigate to email confirmation screen
+      router.replace({
+        pathname: '/(auth)/email-confirmation',
+        params: { email }
+      });
     }
   };
 

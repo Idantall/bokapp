@@ -17,9 +17,9 @@ export default function WelcomeScreen() {
 
       <View style={styles.content}>
         <Text style={styles.emoji}>🌟</Text>
-        <Text style={styles.title}>{t('welcome.title', 'Wellness Wheel')}</Text>
+        <Text style={styles.title}>{t('welcome.title', 'UP!')}</Text>
         <Text style={styles.subtitle}>
-          {t('welcome.subtitle', 'Track your journey to a balanced life')}
+          {t('welcome.subtitle', 'Rise above, balance your life')}
         </Text>
       </View>
 

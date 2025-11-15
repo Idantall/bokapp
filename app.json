@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Wellness Wheel",
-    "slug": "wellness-wheel",
+    "name": "UP!",
+    "slug": "up-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -10,12 +10,12 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.wellnesswheel.app"
+      "bundleIdentifier": "com.upapp.wellness"
     },
     "android": {
-      "package": "com.wellnesswheel.app"
+      "package": "com.upapp.wellness"
     },
-    "scheme": "wellness",
+    "scheme": "upapp",
     "plugins": [
       "expo-router",
       "expo-font"
