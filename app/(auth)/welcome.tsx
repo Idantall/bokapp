@@ -49,7 +49,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.brandOrange,
+    backgroundColor: colors.bgPrimary,
   },
   header: {
     padding: spacing.lg,
@@ -62,23 +62,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
   },
   emoji: {
-    fontSize: 80,
+    fontSize: 100,
     marginBottom: spacing.xl,
   },
   title: {
     ...typography.h1,
-    fontSize: 42,
+    fontSize: 56,
     color: colors.white,
     textAlign: 'center',
     marginBottom: spacing.md,
     fontWeight: '800',
+    letterSpacing: 2,
   },
   subtitle: {
-    ...typography.body,
-    fontSize: 18,
-    color: colors.white,
+    ...typography.h3,
+    fontSize: 20,
+    color: colors.textSecondary,
     textAlign: 'center',
-    opacity: 0.9,
+    fontWeight: '400',
   },
   footer: {
     padding: spacing.xl,
@@ -92,20 +93,20 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   primaryButton: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.brandOrange,
   },
   primaryButtonText: {
-    ...typography.body,
-    fontWeight: '600',
-    color: colors.brandOrange,
+    ...typography.button,
+    color: colors.white,
   },
   secondaryButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.bgCard,
+    borderWidth: 1,
+    borderColor: colors.divider,
   },
   secondaryButtonText: {
-    ...typography.body,
-    fontWeight: '600',
-    color: colors.white,
+    ...typography.button,
+    color: colors.textPrimary,
   },
 });
 

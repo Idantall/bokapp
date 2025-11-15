@@ -1,36 +1,71 @@
-// Wellness Wheel Design System
+// UP! Design System - Inspired by Best Wellness Apps
 
 export const colors = {
-  // Brand gradient
+  // Brand gradients (vibrant and energetic)
   brandOrange: '#FF9966',
   brandPink: '#F76E90',
   brandPurple: '#5B7CFF',
+  brandGold: '#FFB84D',
   
-  // Background
-  bgPrimary: '#F6F7FB',
-  bgCard: '#FFFFFF',
+  // Background (dark mode for premium feel)
+  bgPrimary: '#1A1A1A',
+  bgSecondary: '#2D2D2D',
+  bgCard: '#242424',
   
-  // Text
-  textPrimary: '#1F2933',
-  textSecondary: '#6B7280',
-  textTertiary: '#9CA3AF',
+  // Text (optimized for dark mode)
+  textPrimary: '#FFFFFF',
+  textSecondary: '#B0B0B0',
+  textTertiary: '#808080',
   
   // UI
-  divider: '#E5E7EB',
-  success: '#22C55E',
-  warning: '#F97316',
+  divider: '#3D3D3D',
+  success: '#10B981',
+  warning: '#F59E0B',
   error: '#EF4444',
   white: '#FFFFFF',
+  black: '#000000',
   
-  // Life Areas
-  health: '#22C55E',
-  family: '#F59E0B',
-  career: '#3B82F6',
-  relationships: '#EC4899',
-  finances: '#10B981',
-  freeTime: '#8B5CF6',
-  environment: '#06B6D4',
-  meaning: '#F97316',
+  // Life Area Gradients (vibrant and distinct)
+  health: {
+    start: '#FF6B6B',
+    end: '#FF4757',
+    solid: '#FF5757',
+  },
+  family: {
+    start: '#FFB84D',
+    end: '#FFA726',
+    solid: '#FFB84D',
+  },
+  career: {
+    start: '#FFE66D',
+    end: '#FFD93D',
+    solid: '#FFE66D',
+  },
+  relationships: {
+    start: '#FF6B9D',
+    end: '#FF1744',
+    solid: '#FF4581',
+  },
+  finances: {
+    start: '#10B981',
+    end: '#059669',
+    solid: '#10B981',
+  },
+  freeTime: {
+    start: '#A78BFA',
+    end: '#8B5CF6',
+    solid: '#9F7AEA',
+  },
+  environment: {
+    start: '#60D394',
+    end: '#3DD68C',
+    solid: '#4ADE94',
+  },
+  meaning: {
+    start: '#FF8C42',
+    end: '#FF7315',
+    solid: '#FF8030',
+  },
 };
 
 export const spacing = {
@@ -53,29 +88,47 @@ export const borderRadius = {
 
 export const typography = {
   h1: {
-    fontSize: 28,
-    lineHeight: 36,
-    fontWeight: '600' as const,
+    fontSize: 32,
+    lineHeight: 40,
+    fontWeight: '700' as const,
+    letterSpacing: -0.5,
   },
   h2: {
-    fontSize: 22,
-    lineHeight: 28,
+    fontSize: 24,
+    lineHeight: 32,
     fontWeight: '600' as const,
+    letterSpacing: -0.3,
   },
   h3: {
-    fontSize: 18,
-    lineHeight: 24,
-    fontWeight: '500' as const,
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: '600' as const,
   },
   body: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: '400' as const,
   },
+  bodyBold: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '600' as const,
+  },
+  bodySmall: {
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '400' as const,
+  },
   caption: {
     fontSize: 13,
     lineHeight: 18,
     fontWeight: '400' as const,
+  },
+  button: {
+    fontSize: 17,
+    lineHeight: 24,
+    fontWeight: '600' as const,
+    letterSpacing: 0.5,
   },
 };
 
