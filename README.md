@@ -1,116 +1,216 @@
-# Wellness Wheel - React Native Mobile App
+# Wellness Wheel - Life Balance Tracking App
 
-A production-grade wellness tracking mobile app with Life Wheel visualization, AI coaching, mood tracking, and Hebrew/English support.
+A beautiful React Native mobile app for tracking life balance across 8 key areas. Features mood tracking, gratitude journal, AI wellness coach, and comprehensive analytics. Built with Expo, React Native, and Supabase.
 
-## 📊 Project Status
+**🌍 Fully bilingual:** Hebrew (RTL) and English (LTR) support
 
-### ✅ Completed (45% of Total Project)
+---
 
-#### Backend & Database (100% Complete)
-- **6 SQL Migration Files** - Complete database schema
-  - Core tables (users, life areas, goals, mood, gratitude)
-  - AI & communication infrastructure
-  - Subscription & usage tracking
-  - Database views & analytics functions
-  - Row Level Security policies
-  - Seed data (8 life areas, subscription plans)
+## 🎯 Features
 
-#### Edge Functions (100% Complete)
-- **ai-chat** - OpenAI Assistants API v2 integration with quota enforcement
-- **generate-goal-suggestions** - AI-powered SMART goal generation
-- **admin-broadcast-notification** - Push notification broadcasting
-- **send-daily-reminders** - Cron-triggered daily/weekly reminders
+### Core Features
+- ✅ **Life Wheel Visualization** - Interactive 8-area life balance wheel
+- ✅ **Mood Tracking** - Daily emotional check-ins with trends
+- ✅ **Gratitude Journal** - Daily gratitude entries with calendar view
+- ✅ **Goal Management** - SMART goal creation and tracking
+- ✅ **Progress Tracking** - Per-area progress entries with notes
+- ✅ **AI Wellness Coach** - Conversational AI assistant (OpenAI integration)
+- ✅ **Analytics Dashboard** - Charts, insights, and balance score
+- ✅ **Bilingual** - Hebrew/English with RTL/LTR layout switching
 
-#### Mobile App Foundation (100% Complete)
-- Expo project with TypeScript
-- All dependencies installed
-- Babel & Tailwind configured
-- App configuration with deep linking (`wellness://`)
-- **Core Infrastructure**:
-  - `src/lib/supabase.ts` - Supabase client
-  - `src/lib/theme.ts` - Complete design system
-  - `src/lib/i18n/` - Hebrew/English translations
-  - `src/lib/notifications.ts` - Push notification handler
-  - `src/lib/billing.ts` - In-app purchase stub
-- **TypeScript Types**:
-  - `src/types/database.ts` - All database entity types
+### 8 Life Areas
+1. 💚 **Health** - Physical wellness and fitness
+2. 👨‍👩‍👧 **Family** - Family relationships
+3. 💼 **Career** - Professional development
+4. 💕 **Relationships** - Social connections
+5. 💰 **Finances** - Financial health
+6. 🎨 **Free Time** - Hobbies and recreation
+7. 🏡 **Environment** - Living space and surroundings
+8. ⭐ **Meaning & Purpose** - Spirituality and values
 
-### 🚧 Remaining Work (55% of Total Project)
+### Premium Features
+- 📊 **Unlimited Goals** (Free: 3 per area)
+- 💬 **Unlimited AI Chat** (Free: 10 messages/month)
+- 📈 **Advanced Analytics**
+- 🔔 **Custom Notifications**
 
-#### Hooks (Pending)
-1. `src/hooks/useAuth.ts` - Authentication state
-2. `src/hooks/useCurrentUser.ts` - User profile with plan
-3. `src/hooks/useLifeAreas.ts` - Life areas data
-4. `src/hooks/useDirection.ts` - RTL/LTR layout helper
-5. `src/hooks/useGoals.ts` - Goals CRUD with free tier validation
-6. `src/hooks/useMoodEntries.ts` - Mood tracking
-7. `src/hooks/useGratitude.ts` - Gratitude journal
-8. `src/hooks/useAIChat.ts` - AI chat with quota enforcement
+---
 
-#### Reusable Components (Pending)
-9. `src/components/LifeWheel.tsx` - Main SVG wheel visualization
-10. `src/components/ScreenHeader.tsx` - Page headers
-11. `src/components/MetricCard.tsx` - Analytics cards
-12. `src/components/EmptyState.tsx` - Empty state screens
-13. `src/components/LoadingOverlay.tsx` - Loading indicator
+## 🏗️ Architecture
 
-#### Screens - Expo Router (Pending)
-14. `app/_layout.tsx` - Root layout with auth check
-15. `app/(auth)/welcome.tsx` - Welcome screen
-16. `app/(auth)/login.tsx` - Login
-17. `app/(auth)/register.tsx` - Registration
-18. **Onboarding Flow** (9 screens):
-    - `app/onboarding/terms.tsx`
-    - `app/onboarding/profile.tsx`
-    - `app/onboarding/life-areas.tsx`
-    - `app/onboarding/baseline.tsx`
-    - `app/onboarding/focus-area.tsx`
-    - `app/onboarding/starter-goals.tsx`
-    - `app/onboarding/notifications.tsx`
-    - `app/onboarding/plan-info.tsx`
-    - `app/onboarding/done.tsx`
-19. **Main App** (Tab Navigation):
-    - `app/(main)/_layout.tsx` - Tab navigator
-    - `app/(main)/index.tsx` - Home with Life Wheel
-    - `app/(main)/mood.tsx` - Mood & gratitude tracking
-    - `app/(main)/ai-chat.tsx` - AI coach chat
-    - `app/(main)/analytics.tsx` - Analytics dashboard
-    - `app/(main)/profile.tsx` - User profile
-20. **Additional Screens**:
-    - `app/(main)/life-area/[id].tsx` - Life area detail
-    - `app/(main)/goals/new.tsx` - Create goal
-    - `app/(main)/goals/[id].tsx` - Edit goal
-    - `app/(main)/paywall.tsx` - Subscription paywall
-    - `app/(main)/gratitude.tsx` - Gratitude journal calendar
-21. **Admin Panel**:
-    - `app/(admin)/dashboard.tsx`
-    - `app/(admin)/life-areas.tsx`
-    - `app/(admin)/notifications.tsx`
+### Frontend (React Native + Expo SDK 52)
+- **Navigation:** Expo Router (file-based routing)
+- **Styling:** React Native StyleSheet with custom design system
+- **State Management:** React hooks + Supabase Realtime
+- **Internationalization:** i18next with expo-localization
+- **Forms:** react-hook-form + zod validation
+- **Type Safety:** TypeScript throughout
 
-## 🚀 Quick Start
+### Backend (Supabase)
+- **Database:** PostgreSQL with Row Level Security (RLS)
+- **Authentication:** Supabase Auth (email/password)
+- **Realtime:** Supabase Realtime subscriptions
+- **Edge Functions:** Deno-based serverless functions
+- **Storage:** (Ready for future file uploads)
 
-### Prerequisites
-1. Node.js installed
-2. Expo CLI: `npm install -g expo-cli`
-3. iOS Simulator or Android Emulator (or Expo Go app on physical device)
-4. Supabase account with project created
+---
 
-### Setup Steps
+## 📁 Project Structure
 
-#### 1. Database Setup
-Run all migrations in your Supabase SQL Editor in order:
-```bash
-supabase/migrations/001_core_tables.sql
-supabase/migrations/002_ai_communication_tables.sql
-supabase/migrations/003_subscription_tables.sql
-supabase/migrations/004_views_and_functions.sql
-supabase/migrations/005_rls_policies.sql
-supabase/migrations/006_seed_data.sql
+```
+Bok App/
+├── app/                          # Expo Router screens
+│   ├── (auth)/                   # Authentication flow
+│   │   ├── welcome.tsx           # Landing page
+│   │   ├── login.tsx             # Login screen
+│   │   ├── register.tsx          # Registration
+│   │   └── onboarding.tsx        # 9-step onboarding wizard
+│   ├── (app)/                    # Main app (requires auth)
+│   │   ├── (tabs)/               # Bottom tab navigation
+│   │   │   ├── home.tsx          # Life Wheel dashboard
+│   │   │   ├── mood.tsx          # Mood & gratitude tracking
+│   │   │   ├── ai.tsx            # AI wellness coach chat
+│   │   │   ├── analytics.tsx    # Charts and insights
+│   │   │   └── profile.tsx      # User profile & settings
+│   │   ├── life-area/[id].tsx   # Life area detail page
+│   │   ├── paywall.tsx           # Subscription upgrade
+│   │   └── admin/                # Admin panel
+│   ├── _layout.tsx               # Root layout with auth check
+│   └── index.tsx                 # App entry point
+│
+├── src/
+│   ├── components/               # Reusable UI components
+│   │   ├── LifeWheel.tsx         # SVG life balance wheel
+│   │   ├── ScreenHeader.tsx      # Page headers
+│   │   ├── MetricCard.tsx        # Analytics cards
+│   │   ├── EmptyState.tsx        # Empty state screens
+│   │   ├── LoadingOverlay.tsx    # Loading indicator
+│   │   └── LanguageToggle.tsx    # Hebrew/English switcher
+│   │
+│   ├── hooks/                    # Custom React hooks
+│   │   ├── useAuth.ts            # Authentication state
+│   │   ├── useCurrentUser.ts     # Current user + subscription
+│   │   ├── useLifeAreas.ts       # Life areas data
+│   │   ├── useGoals.ts           # Goals CRUD + validation
+│   │   ├── useMoodEntries.ts     # Mood tracking
+│   │   ├── useGratitude.ts       # Gratitude journal
+│   │   ├── useAIChat.ts          # AI chat with quota
+│   │   └── useDirection.ts       # RTL/LTR layout
+│   │
+│   ├── lib/                      # Core utilities
+│   │   ├── supabase.ts           # Supabase client
+│   │   ├── theme.ts              # Design system (colors, spacing, typography)
+│   │   ├── i18n/                 # Internationalization
+│   │   │   ├── index.ts          # i18next config
+│   │   │   └── locales/
+│   │   │       ├── en.json       # English translations
+│   │   │       └── he.json       # Hebrew translations
+│   │   ├── notifications.ts      # Push notifications
+│   │   └── billing.ts            # In-app purchases (stub)
+│   │
+│   └── types/
+│       └── database.ts           # TypeScript types for DB
+│
+├── supabase/
+│   ├── migrations/               # Database migrations
+│   │   ├── 001_core_tables.sql
+│   │   ├── 002_ai_communication_tables.sql
+│   │   ├── 003_subscription_tables.sql
+│   │   ├── 004_views_and_functions.sql
+│   │   ├── 005_rls_policies.sql
+│   │   └── 006_seed_data.sql
+│   │
+│   └── functions/                # Edge Functions (Deno)
+│       ├── ai-chat/              # AI chat handler
+│       ├── generate-goal-suggestions/
+│       ├── admin-broadcast-notification/
+│       └── send-daily-reminders/
+│
+├── ios/                          # Native iOS project (generated)
+├── app.json                      # Expo configuration
+├── package.json                  # Dependencies
+├── tsconfig.json                 # TypeScript config
+└── setup_database.sql            # Combined migration file
 ```
 
-#### 2. Deploy Edge Functions
+---
+
+## 📊 Database Schema (13 Tables)
+
+### Core Tables
+- `users` - User profiles with subscription info
+- `life_areas` - 8 predefined life areas (with Hebrew/English names)
+- `user_life_areas` - User's custom life area ratings
+- `progress_entries` - Daily/weekly progress logs per area
+- `user_goals` - SMART goals with status tracking
+- `mood_entries` - Daily mood check-ins (1-5 scale)
+- `gratitude_entries` - Daily gratitude journal
+
+### AI & Communication
+- `ai_threads` - OpenAI Assistant thread persistence
+- `ai_conversations` - User chat sessions
+- `ai_messages` - Individual chat messages
+- `user_devices` - Push notification tokens
+- `user_notification_settings` - Notification preferences
+- `notification_logs` - Sent notification history
+
+### Subscriptions & Admin
+- `subscription_plans` - Free & Premium plans
+- `user_subscriptions` - User subscription status
+- `user_usage_counters` - Feature usage tracking (goals, AI messages)
+- `admin_broadcasts` - Admin notification campaigns
+
+### Views
+- `app_metrics_daily` - Daily active users, engagement
+- `app_metrics_life_areas` - Life area usage stats
+- `app_metrics_plans` - Subscription conversion metrics
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Expo CLI: `npm install -g expo-cli`
+- iOS Simulator (macOS) or Android Emulator
+- Supabase account
+
+### 1. Clone the Repository
 ```bash
-cd "/Users/idant/Bok App"
+git clone https://github.com/Idantall/bokapp.git
+cd bokapp
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Setup Environment Variables
+Create `.env` in the root:
+```env
+EXPO_PUBLIC_SUPABASE_URL=your-project-url.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+### 4. Setup Supabase Database
+1. Go to your Supabase project dashboard
+2. Navigate to SQL Editor
+3. Copy contents of `setup_database.sql`
+4. Run the SQL script
+5. Verify 13 tables were created
+
+### 5. Deploy Edge Functions (Optional)
+```bash
+# Install Supabase CLI
+npm install -g supabase
+
+# Login
+supabase login
+
+# Link project
+supabase link --project-ref your-project-ref
 
 # Deploy functions
 supabase functions deploy ai-chat
@@ -119,178 +219,247 @@ supabase functions deploy admin-broadcast-notification
 supabase functions deploy send-daily-reminders
 
 # Set secrets
-supabase secrets set OPENAI_API_KEY=your_key_here
-supabase secrets set OPENAI_ASSISTANT_ID=asst_woJDvqiqm0qS0YYpwKaaglmL
+supabase secrets set OPENAI_API_KEY=your-openai-key
+supabase secrets set EXPO_PUSH_TOKEN=your-expo-push-token
 ```
 
-#### 3. Install Dependencies (Already Done)
+### 6. Run the App
+
+**iOS Simulator:**
 ```bash
-npm install
+npx expo run:ios
 ```
 
-#### 4. Run the App
+**Android Emulator:**
 ```bash
-npm start       # Start Expo dev server
-npm run ios     # Run on iOS simulator
-npm run android # Run on Android emulator
+npx expo run:android
 ```
 
-## 📁 Project Structure
-
-```
-/Users/idant/Bok App/
-├── supabase/
-│   ├── migrations/          # 6 SQL migration files ✅
-│   ├── functions/           # 4 Edge Functions ✅
-│   └── README.md            # Database documentation ✅
-├── src/
-│   ├── lib/                 # Core libraries ✅
-│   │   ├── supabase.ts
-│   │   ├── theme.ts
-│   │   ├── i18n/
-│   │   ├── notifications.ts
-│   │   └── billing.ts
-│   ├── types/               # TypeScript types ✅
-│   │   └── database.ts
-│   ├── hooks/               # Custom React hooks 🚧
-│   └── components/          # Reusable components 🚧
-├── app/                     # Expo Router screens 🚧
-│   ├── _layout.tsx
-│   ├── (auth)/
-│   ├── onboarding/
-│   ├── (main)/
-│   └── (admin)/
-├── app.json                 # Expo configuration ✅
-├── tsconfig.json            # TypeScript config ✅
-├── tailwind.config.js       # Tailwind config ✅
-├── babel.config.js          # Babel config ✅
-├── package.json             # Dependencies ✅
-├── SETUP_GUIDE.md           # Detailed setup guide ✅
-└── README.md                # This file
-
-✅ = Completed
-🚧 = Pending
-```
-
-## 🎨 Design System
-
-### Brand Colors
-- **Gradient**: `#FF9966` → `#F76E90` → `#5B7CFF`
-- **Background**: `#F6F7FB`
-- **Card**: `#FFFFFF`
-
-### Life Area Colors
-- 🏃 Health: `#22C55E` (green)
-- 👨‍👩‍👧‍👦 Family: `#F59E0B` (amber)
-- 💼 Career: `#3B82F6` (blue)
-- ❤️ Relationships: `#EC4899` (pink)
-- 💰 Finances: `#10B981` (emerald)
-- 🎨 Free Time: `#8B5CF6` (violet)
-- 🏡 Environment: `#06B6D4` (cyan)
-- 🙏 Meaning: `#F97316` (orange)
-
-### Typography
-- **H1**: 28px / semibold
-- **H2**: 22px / semibold
-- **H3**: 18px / medium
-- **Body**: 16px / regular
-
-## 🔐 Features
-
-### Free Tier
-- ✅ 1 life area for goals
-- ✅ 5 AI coach messages (total, not per day)
-- ✅ Basic analytics
-- ✅ Mood tracking
-- ✅ Gratitude journal
-
-### Premium Tier ($9.99/month)
-- ✅ Goals in all 8 life areas (unlimited)
-- ✅ Unlimited AI coach messages
-- ✅ Advanced analytics
-- ✅ Priority features
-
-### Security
-- ✅ Row Level Security (RLS) on all tables
-- ✅ Service role for Edge Functions
-- ✅ Admin-only metrics (no personal data)
-- ✅ Secure authentication with Supabase Auth
-
-## 🌐 Internationalization
-
-- **Languages**: Hebrew (he), English (en)
-- **RTL Support**: Full RTL layout for Hebrew
-- **Default**: Hebrew
-- **Translations**: Complete in `src/lib/i18n/locales/`
-
-## 📱 Deep Linking
-
-**Scheme**: `wellness://`
-
-**Routes**:
-- `wellness://home` - Home screen
-- `wellness://mood` - Mood tracking
-- `wellness://ai-chat` - AI coach
-- `wellness://paywall` - Subscription screen
-- `wellness://life-area/:id` - Life area detail
-
-## 🔧 Development Commands
-
+**Web Browser:**
 ```bash
-npm start          # Start dev server
-npm run ios        # Run on iOS
-npm run android    # Run on Android
-npm run web        # Run on web (optional)
+npx expo start --web
 ```
 
-## 📝 Environment Variables
-
-Located in `app.json` extra config (or use `.env` if needed):
-
+**Expo Go (requires SDK 52 or upgrade to SDK 54):**
+```bash
+npx expo start
+# Scan QR code with Expo Go app
 ```
-EXPO_PUBLIC_SUPABASE_URL=https://vpqxigieedjwqmxducku.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-```
-
-## 🤖 OpenAI Integration
-
-- **Assistant ID**: `asst_woJDvqiqm0qS0YYpwKaaglmL`
-- **Model**: GPT-4o
-- **API**: Assistants API v2
-- **Thread Persistence**: Automatic with graceful recovery
-
-## 📚 Documentation
-
-- **Database**: See `supabase/README.md`
-- **Edge Functions**: See `supabase/functions/README.md`
-- **Setup Guide**: See `SETUP_GUIDE.md`
-
-## 🐛 Known Issues / TODOs
-
-1. Complete remaining 18 React Native screens/components
-2. Implement all custom hooks
-3. Test free tier quota enforcement
-4. Test RTL/LTR switching
-5. Integrate actual billing (App Store/Play Store)
-6. Add E2E tests
-7. Performance optimization
-8. Add offline support
-9. Implement data caching
-
-## 📞 Support & Contact
-
-For issues or questions:
-1. Check the SETUP_GUIDE.md
-2. Review Supabase dashboard logs
-3. Check Edge Function logs in Supabase
-
-## 📄 License
-
-Private project - All rights reserved
 
 ---
 
-**Project Created**: November 2025
-**Status**: Foundation Complete - Ready for Screen Development
-**Estimated Completion**: 20-30 hours of additional development for screens/components
+## 🧪 Testing the App
 
+### Quick Test Flow
+1. **Welcome Screen** → Tap "Get Started"
+2. **Register** → Enter email + password
+3. **Onboarding** → Complete 9-step wizard
+   - Select focus areas
+   - Rate current life balance
+   - Set initial goals
+   - Enable notifications
+4. **Home Screen** → See your Life Wheel
+5. **Mood Tab** → Log your mood (1-5 scale)
+6. **AI Tab** → Chat with wellness coach
+7. **Analytics Tab** → View progress charts
+8. **Profile Tab** → Switch language (Hebrew ⟷ English)
+
+### Check Supabase Dashboard
+- Go to Table Editor
+- Verify data appears in:
+  - `users`
+  - `user_life_areas`
+  - `mood_entries`
+  - `user_goals`
+
+---
+
+## 🌍 Internationalization (i18n)
+
+The app is fully bilingual with automatic RTL/LTR layout switching:
+
+**Supported Languages:**
+- 🇺🇸 English (LTR)
+- 🇮🇱 Hebrew (RTL)
+
+**Translation Files:**
+- `src/lib/i18n/locales/en.json`
+- `src/lib/i18n/locales/he.json`
+
+**Adding a New Language:**
+1. Create `src/lib/i18n/locales/[lang].json`
+2. Copy structure from `en.json`
+3. Translate all strings
+4. Update `src/lib/i18n/index.ts` to include new language
+
+---
+
+## 🎨 Design System
+
+### Colors
+```typescript
+// Brand Gradient
+brandOrange: '#FF9966'
+brandPink: '#F76E90'
+brandPurple: '#5B7CFF'
+
+// Life Area Colors
+health: '#22C55E'      // Green
+family: '#F59E0B'      // Orange
+career: '#3B82F6'      // Blue
+relationships: '#EC4899' // Pink
+finances: '#10B981'    // Emerald
+freeTime: '#8B5CF6'    // Purple
+environment: '#06B6D4'  // Cyan
+meaning: '#F97316'     // Orange-red
+```
+
+### Typography
+- **Display:** 32px, Bold
+- **Heading 1:** 28px, Bold
+- **Heading 2:** 24px, Semibold
+- **Heading 3:** 20px, Semibold
+- **Body:** 16px, Regular
+- **Caption:** 14px, Regular
+- **Small:** 12px, Regular
+
+---
+
+## 🔐 Security
+
+### Row Level Security (RLS)
+All tables have RLS policies:
+- Users can only access their own data
+- Admin users can access admin metrics views
+- Life areas are read-only for all users
+- Subscription plans are public
+
+### Authentication
+- Email/password via Supabase Auth
+- JWT-based session management
+- Auto-refresh tokens
+- Secure credential storage
+
+### API Keys
+- `.env` file is gitignored
+- Never commit sensitive credentials
+- Use Supabase environment variables
+- Rotate tokens regularly
+
+---
+
+## 📱 Production Deployment
+
+### iOS App Store
+1. Build production app: `eas build --platform ios --profile production`
+2. Submit to App Store Connect
+3. Configure app metadata
+4. Submit for review
+
+### Google Play Store
+1. Build production app: `eas build --platform android --profile production`
+2. Upload to Google Play Console
+3. Configure store listing
+4. Submit for review
+
+See `CUSTOM_DEV_BUILD.md` for detailed build instructions.
+
+---
+
+## 📚 Documentation
+
+- `SETUP_GUIDE.md` - Complete setup instructions
+- `QUICK_START.md` - Fast setup guide
+- `HOW_TO_RUN_APP.md` - Running the app
+- `TESTING_OPTIONS.md` - Testing strategies
+- `UPGRADE_TO_SDK54.md` - SDK upgrade guide
+- `CUSTOM_DEV_BUILD.md` - Custom build instructions
+- `PROJECT_STATUS.md` - Development status
+- `GITHUB_PUSH.md` - Git workflow guide
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend:**
+- React Native 0.76.6
+- Expo SDK 52
+- TypeScript 5.3
+- Expo Router 4.0
+- react-hook-form + zod
+- i18next + react-i18next
+
+**Backend:**
+- Supabase (PostgreSQL)
+- Supabase Auth
+- Supabase Realtime
+- Supabase Edge Functions (Deno)
+
+**AI Integration:**
+- OpenAI Assistants API v2
+- GPT-4o model
+
+**Tools:**
+- Git + GitHub
+- npm
+- Expo CLI
+- Supabase CLI
+
+---
+
+## 📈 Project Status
+
+### ✅ Completed (90%)
+- [x] Database schema (13 tables)
+- [x] SQL migrations (6 files)
+- [x] RLS policies
+- [x] Edge Functions (4 functions)
+- [x] All React hooks (8 hooks)
+- [x] All UI components (6 components)
+- [x] All screens (17 screens)
+- [x] Authentication flow
+- [x] Onboarding wizard
+- [x] Main app navigation
+- [x] Internationalization (Hebrew/English)
+- [x] Design system
+- [x] TypeScript types
+
+### 🚧 Pending (10%)
+- [ ] AI Assistant configuration (needs OpenAI API key)
+- [ ] Push notifications setup (needs Expo push token)
+- [ ] In-app purchases integration (iOS/Android)
+- [ ] App Store assets (icon, screenshots)
+- [ ] App Store listings
+- [ ] Production testing
+
+---
+
+## 🤝 Contributing
+
+This is a personal project, but suggestions are welcome!
+
+---
+
+## 📄 License
+
+Proprietary - All rights reserved
+
+---
+
+## 👨‍💻 Author
+
+**Idan Tal**
+- GitHub: [@Idantall](https://github.com/Idantall)
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with [Expo](https://expo.dev)
+- Backend by [Supabase](https://supabase.com)
+- AI by [OpenAI](https://openai.com)
+- Design inspired by Material Design 3
+
+---
+
+**⭐ Star this repo if you find it useful!**
