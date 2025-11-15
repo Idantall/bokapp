@@ -16,16 +16,17 @@ export default function WelcomeScreen() {
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.emoji}>🌟</Text>
-        <Text style={styles.title}>{t('welcome.title', 'UP!')}</Text>
+        <Text style={styles.emoji}>⭐</Text>
+        <Text style={styles.title}>UP!</Text>
         <Text style={styles.subtitle}>
-          {t('welcome.subtitle', 'Rise above, balance your life')}
+          {t('welcome.subtitle', 'Track your journey to a balanced life')}
         </Text>
       </View>
 
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.button, styles.primaryButton, shadows.lg]}
+          style={[styles.primaryButton, shadows.lg]}
+          activeOpacity={0.8}
           onPress={() => router.push('/(auth)/register')}
         >
           <Text style={styles.primaryButtonText}>
@@ -34,7 +35,8 @@ export default function WelcomeScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, styles.secondaryButton]}
+          style={styles.secondaryButton}
+          activeOpacity={0.8}
           onPress={() => router.push('/(auth)/login')}
         >
           <Text style={styles.secondaryButtonText}>
@@ -62,51 +64,60 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
   },
   emoji: {
-    fontSize: 100,
-    marginBottom: spacing.xl,
+    fontSize: 80,
+    marginBottom: spacing.lg,
   },
   title: {
-    ...typography.h1,
-    fontSize: 56,
+    fontSize: 48,
     color: colors.white,
     textAlign: 'center',
-    marginBottom: spacing.md,
-    fontWeight: '800',
-    letterSpacing: 2,
+    marginBottom: spacing.sm,
+    fontWeight: '700',
+    letterSpacing: 4,
   },
   subtitle: {
-    ...typography.h3,
-    fontSize: 20,
+    ...typography.body,
+    fontSize: 16,
     color: colors.textSecondary,
     textAlign: 'center',
     fontWeight: '400',
+    maxWidth: 280,
   },
   footer: {
-    padding: spacing.xl,
-    paddingBottom: spacing.xxl,
-  },
-  button: {
-    paddingVertical: spacing.lg,
     paddingHorizontal: spacing.xl,
-    borderRadius: borderRadius.button,
-    alignItems: 'center',
-    marginBottom: spacing.md,
+    paddingBottom: spacing.xxl,
+    width: '100%',
   },
   primaryButton: {
     backgroundColor: colors.brandOrange,
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.button,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+    width: '100%',
   },
   primaryButtonText: {
-    ...typography.button,
+    fontSize: 17,
+    fontWeight: '600',
     color: colors.white,
+    letterSpacing: 0.5,
   },
   secondaryButton: {
     backgroundColor: colors.bgCard,
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.button,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: colors.divider,
+    width: '100%',
   },
   secondaryButtonText: {
-    ...typography.button,
+    fontSize: 17,
+    fontWeight: '600',
     color: colors.textPrimary,
+    letterSpacing: 0.5,
   },
 });
 

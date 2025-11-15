@@ -16,13 +16,13 @@ import { useDirection } from '@/hooks/useDirection';
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { user, isPremium } = useCurrentUser();
+  const { user, isPremium, loading: userLoading, error: userError } = useCurrentUser();
   const { activeLifeAreas, loading: areasLoading } = useLifeAreas();
   const { activeGoals } = useGoals();
   const { streak, todayEntry } = useMoodEntries();
   const { isRTL } = useDirection();
 
-  if (areasLoading) {
+  if (userLoading || areasLoading) {
     return <LoadingOverlay />;
   }
 
