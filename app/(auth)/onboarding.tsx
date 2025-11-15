@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,9 @@ export default function OnboardingScreen() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const colors = useThemedColors();
+  
+  // Create styles with themed colors
+  const styles = useMemo(() => createStyles(colors), [colors]);
   
   const [currentStep, setCurrentStep] = useState(0);
   const [name, setName] = useState('');
@@ -251,7 +254,7 @@ export default function OnboardingScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bgPrimary,

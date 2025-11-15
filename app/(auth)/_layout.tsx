@@ -6,7 +6,9 @@ export default function AuthLayout() {
       <Stack.Screen name="welcome" />
       <Stack.Screen name="login" />
       <Stack.Screen name="register" />
+      <Stack.Screen name="email-confirmation" />
       <Stack.Screen name="onboarding" />
+      <Stack.Screen name="progress-preview" />
     </Stack>
   );
 }
