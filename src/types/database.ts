@@ -28,9 +28,7 @@ export interface LifeArea {
   name_en: string;
   name_he: string;
   icon: string;
-  color: string;
-  description_en: string | null;
-  description_he: string | null;
+  color_hex: string;
   order_index: number;
   created_at: string;
 }
