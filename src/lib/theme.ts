@@ -1,31 +1,15 @@
-// UP! Design System - Inspired by Best Wellness Apps
+// UP! Design System - Adaptive Light/Dark Theme
 
-export const colors = {
-  // Brand gradients (vibrant and energetic)
-  brandOrange: '#FF9966',
-  brandPink: '#F76E90',
-  brandPurple: '#5B7CFF',
-  brandGold: '#FFB84D',
-  
-  // Background (dark mode for premium feel)
-  bgPrimary: '#1A1A1A',
-  bgSecondary: '#2D2D2D',
-  bgCard: '#242424',
-  
-  // Text (optimized for dark mode)
-  textPrimary: '#FFFFFF',
-  textSecondary: '#B0B0B0',
-  textTertiary: '#808080',
-  
-  // UI
-  divider: '#3D3D3D',
-  success: '#10B981',
-  warning: '#F59E0B',
-  error: '#EF4444',
-  white: '#FFFFFF',
-  black: '#000000',
-  
-  // Life Area Gradients (vibrant and distinct)
+// Brand colors (same in both modes)
+export const brandColors = {
+  orange: '#FF9966',
+  pink: '#F76E90',
+  purple: '#5B7CFF',
+  gold: '#FFB84D',
+};
+
+// Life Area Gradients (same in both modes - vibrant and distinct)
+export const lifeAreaColors = {
   health: {
     start: '#FF6B6B',
     end: '#FF4757',
@@ -67,6 +51,86 @@ export const colors = {
     solid: '#FF8030',
   },
 };
+
+// Light mode colors (default)
+export const lightColors = {
+  // Brand
+  brandOrange: brandColors.orange,
+  brandPink: brandColors.pink,
+  brandPurple: brandColors.purple,
+  brandGold: brandColors.gold,
+  
+  // Background
+  bgPrimary: '#FFFFFF',
+  bgSecondary: '#F8F9FA',
+  bgCard: '#FFFFFF',
+  
+  // Text
+  textPrimary: '#1F2933',
+  textSecondary: '#6B7280',
+  textTertiary: '#9CA3AF',
+  
+  // UI
+  divider: '#E5E7EB',
+  success: '#10B981',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  white: '#FFFFFF',
+  black: '#000000',
+  
+  // Life areas
+  health: lifeAreaColors.health,
+  family: lifeAreaColors.family,
+  career: lifeAreaColors.career,
+  relationships: lifeAreaColors.relationships,
+  finances: lifeAreaColors.finances,
+  freeTime: lifeAreaColors.freeTime,
+  environment: lifeAreaColors.environment,
+  meaning: lifeAreaColors.meaning,
+};
+
+// Dark mode colors
+export const darkColors = {
+  // Brand
+  brandOrange: brandColors.orange,
+  brandPink: brandColors.pink,
+  brandPurple: brandColors.purple,
+  brandGold: brandColors.gold,
+  
+  // Background
+  bgPrimary: '#1A1A1A',
+  bgSecondary: '#2D2D2D',
+  bgCard: '#242424',
+  
+  // Text
+  textPrimary: '#FFFFFF',
+  textSecondary: '#B0B0B0',
+  textTertiary: '#808080',
+  
+  // UI
+  divider: '#3D3D3D',
+  success: '#10B981',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  white: '#FFFFFF',
+  black: '#000000',
+  
+  // Life areas
+  health: lifeAreaColors.health,
+  family: lifeAreaColors.family,
+  career: lifeAreaColors.career,
+  relationships: lifeAreaColors.relationships,
+  finances: lifeAreaColors.finances,
+  freeTime: lifeAreaColors.freeTime,
+  environment: lifeAreaColors.environment,
+  meaning: lifeAreaColors.meaning,
+};
+
+// Helper function to get colors based on theme
+export const getColors = (isDark: boolean) => isDark ? darkColors : lightColors;
+
+// Default export for backwards compatibility
+export const colors = lightColors;
 
 export const spacing = {
   xs: 4,

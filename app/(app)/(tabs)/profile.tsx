@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { colors, typography, spacing, borderRadius, shadows } from '@/lib/theme';
+import { typography, spacing, borderRadius, shadows } from '@/lib/theme';
+import { useThemedColors } from '@/hooks/useThemedColors';
+import { useTheme } from '@/contexts/ThemeContext';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { LoadingOverlay } from '@/components/LoadingOverlay';
@@ -10,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useDirection } from '@/hooks/useDirection';
 import { manageSubscription } from '@/lib/billing';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -17,6 +20,8 @@ export default function ProfileScreen() {
   const { signOut } = useAuth();
   const { user, isPremium, isAdmin, loading } = useCurrentUser();
   const { isRTL } = useDirection();
+  const colors = useThemedColors();
+  const { themeMode, setThemeMode } = useTheme();
 
   if (loading) {
     return <LoadingOverlay />;
@@ -47,14 +52,44 @@ export default function ProfileScreen() {
     }
   };
 
+  const getThemeName = () => {
+    switch (themeMode) {
+      case 'light': return t('profile.theme.light', 'Light');
+      case 'dark': return t('profile.theme.dark', 'Dark');
+      case 'system': return t('profile.theme.system', 'System');
+    }
+  };
+
+  const handleThemeChange = () => {
+    Alert.alert(
+      t('profile.theme.title', 'Appearance'),
+      t('profile.theme.description', 'Choose your preferred theme'),
+      [
+        {
+          text: t('profile.theme.light', 'Light'),
+          onPress: () => setThemeMode('light'),
+        },
+        {
+          text: t('profile.theme.dark', 'Dark'),
+          onPress: () => setThemeMode('dark'),
+        },
+        {
+          text: t('profile.theme.system', 'System'),
+          onPress: () => setThemeMode('system'),
+        },
+        { text: t('cancel', 'Cancel'), style: 'cancel' },
+      ]
+    );
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.bgPrimary }]} edges={['top']}>
       <ScreenHeader
         title={t('profile.title', 'Profile')}
         subtitle={user?.email || ''}
       />
 
-      <ScrollView style={styles.content}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* User Info */}
         <View style={styles.section}>
           <View style={styles.avatarContainer}>
@@ -68,9 +103,30 @@ export default function ProfileScreen() {
           </View>
         </View>
 
+        {/* Appearance */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary, textAlign: isRTL ? 'right' : 'left' }]}>
+            {t('profile.appearance', 'Appearance')}
+          </Text>
+          <TouchableOpacity
+            style={[styles.menuItem, { backgroundColor: colors.bgCard }, shadows.sm]}
+            onPress={handleThemeChange}
+          >
+            <View style={styles.menuItemLeft}>
+              <Text style={styles.menuItemIcon}>
+                {themeMode === 'light' ? '☀️' : themeMode === 'dark' ? '🌙' : '⚙️'}
+              </Text>
+              <Text style={[styles.menuItemText, { color: colors.textPrimary }]}>
+                {t('profile.theme.title', 'Theme')}
+              </Text>
+            </View>
+            <Text style={[styles.menuItemValue, { color: colors.textSecondary }]}>{getThemeName()}</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Language */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { textAlign: isRTL ? 'right' : 'left' }]}>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary, textAlign: isRTL ? 'right' : 'left' }]}>
             {t('profile.language', 'Language')}
           </Text>
           <View style={styles.languageContainer}>
@@ -168,7 +224,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.bgPrimary,
   },
   content: {
     flex: 1,
@@ -185,8 +240,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: colors.brandOrange,
-    color: colors.white,
     fontSize: 36,
     textAlign: 'center',
     lineHeight: 80,
@@ -194,38 +247,33 @@ const styles = StyleSheet.create({
   },
   name: {
     ...typography.h1,
-    color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: spacing.md,
   },
   planBadge: {
     alignSelf: 'center',
-    backgroundColor: colors.divider,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
-    borderRadius: borderRadius.round,
+    borderRadius: borderRadius.full,
   },
   premiumBadge: {
-    backgroundColor: colors.brandOrange + '20',
+    // Will be styled dynamically
   },
   planText: {
     ...typography.caption,
-    color: colors.textSecondary,
     fontWeight: '600',
   },
   premiumText: {
-    color: colors.brandOrange,
+    // Will be styled dynamically
   },
   sectionTitle: {
     ...typography.h2,
-    color: colors.textPrimary,
     marginBottom: spacing.md,
   },
   languageContainer: {
     alignItems: 'center',
   },
   menuItem: {
-    backgroundColor: colors.bgCard,
     borderRadius: borderRadius.md,
     padding: spacing.lg,
     flexDirection: 'row',
@@ -233,20 +281,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.sm,
   },
+  menuItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  menuItemIcon: {
+    fontSize: 24,
+  },
   menuItemText: {
     ...typography.body,
-    color: colors.textPrimary,
   },
   menuItemValue: {
     ...typography.body,
-    color: colors.textSecondary,
   },
   menuItemArrow: {
     ...typography.h3,
-    color: colors.textTertiary,
   },
   upgradeButton: {
-    backgroundColor: colors.brandOrange,
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.xl,
     borderRadius: borderRadius.button,
@@ -255,10 +307,8 @@ const styles = StyleSheet.create({
   upgradeButtonText: {
     ...typography.body,
     fontWeight: '600',
-    color: colors.white,
   },
   signOutButton: {
-    backgroundColor: colors.bgCard,
     marginHorizontal: spacing.lg,
     marginBottom: spacing.xxl,
     paddingVertical: spacing.lg,
@@ -268,7 +318,6 @@ const styles = StyleSheet.create({
   signOutButtonText: {
     ...typography.body,
     fontWeight: '600',
-    color: colors.error,
   },
 });
 
