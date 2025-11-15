@@ -38,8 +38,8 @@ A beautiful React Native mobile app for tracking life balance across 8 key areas
 
 ## 🏗️ Architecture
 
-### Frontend (React Native + Expo SDK 52)
-- **Navigation:** Expo Router (file-based routing)
+### Frontend (React Native + Expo SDK 54)
+- **Navigation:** Expo Router 6.0 (file-based routing)
 - **Styling:** React Native StyleSheet with custom design system
 - **State Management:** React hooks + Supabase Realtime
 - **Internationalization:** i18next with expo-localization
@@ -240,7 +240,7 @@ npx expo run:android
 npx expo start --web
 ```
 
-**Expo Go (requires SDK 52 or upgrade to SDK 54):**
+**Expo Go (requires SDK 54):**
 ```bash
 npx expo start
 # Scan QR code with Expo Go app
@@ -382,9 +382,10 @@ See `CUSTOM_DEV_BUILD.md` for detailed build instructions.
 ## 🛠️ Tech Stack
 
 **Frontend:**
-- React Native 0.76.6
-- Expo SDK 52
-- TypeScript 5.3
+- React Native 0.81.5
+- React 19.1.0
+- Expo SDK 54
+- TypeScript 5.9.2
 - Expo Router 4.0
 - react-hook-form + zod
 - i18next + react-i18next
