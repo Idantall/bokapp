@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { colors, typography, spacing, borderRadius, shadows } from '@/lib/theme';
+import { typography, spacing, borderRadius, shadows } from '@/lib/theme';
+import { useThemedColors } from '@/hooks/useThemedColors';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -12,6 +13,7 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const { user } = useAuth();
+  const colors = useThemedColors();
   
   const [currentStep, setCurrentStep] = useState(0);
   const [name, setName] = useState('');
@@ -29,7 +31,7 @@ export default function OnboardingScreen() {
           .from('users')
           .update({
             full_name: name,
-            preferred_language: selectedLanguage,
+            language: selectedLanguage,
             onboarding_completed: true,
           })
           .eq('id', user.id);
