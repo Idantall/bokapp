@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Wellness Wheel",
+    "slug": "wellness-wheel",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#FF9966"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wellnesswheel.app"
+    },
+    "android": {
+      "package": "com.wellnesswheel.app"
+    },
+    "scheme": "wellness",
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}
+

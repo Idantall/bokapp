@@ -1,0 +1,243 @@
+{
+  "welcome": {
+    "title": "Wellness Wheel",
+    "subtitle": "Track your journey to a balanced life",
+    "getStarted": "Get Started",
+    "login": "I already have an account"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "••••••••",
+    "error": "Error",
+    "fillAllFields": "Please fill all fields",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "loggingIn": "Logging in...",
+    "creating": "Creating...",
+    "termsDisclaimer": "By creating an account, you agree to our Terms of Service and Privacy Policy"
+  },
+  "onboarding": {
+    "terms": {
+      "title": "Terms & Privacy",
+      "text": "By continuing, you agree to our Terms of Service and Privacy Policy. We respect your privacy and will never sell your data.",
+      "accept": "I accept the terms and privacy policy"
+    },
+    "name": {
+      "title": "What's your name?",
+      "placeholder": "Enter your name"
+    },
+    "language": {
+      "title": "Choose your language"
+    },
+    "intro": {
+      "title": "Life Areas",
+      "text": "We help you track 8 key areas of life: Health, Family, Career, Relationships, Finances, Free Time, Environment, and Meaning & Purpose."
+    },
+    "areas": {
+      "title": "Which areas do you want to focus on?",
+      "subtitle": "Select at least one (you can change this later)"
+    },
+    "ai": {
+      "title": "Meet Your AI Coach",
+      "text": "Get personalized advice and support from our AI wellness coach, available 24/7."
+    },
+    "tracking": {
+      "title": "Track Your Progress",
+      "text": "Set goals, track your mood, and journal your gratitude daily."
+    },
+    "premium": {
+      "title": "Premium Features",
+      "text": "Free users get 5 AI messages per day and goals in one life area. Upgrade for unlimited access!"
+    },
+    "done": {
+      "title": "You're all set!",
+      "text": "Let's start your journey to a more balanced life."
+    },
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish"
+  },
+  "tabs": {
+    "home": "Home",
+    "mood": "Mood",
+    "ai": "AI Coach",
+    "analytics": "Analytics",
+    "profile": "Profile"
+  },
+  "home": {
+    "greeting": "Hello, {{name}}",
+    "subtitle": "How are you feeling today?",
+    "balanceScore": "Balance Score",
+    "activeGoals": "Active Goals",
+    "moodStreak": "Day Streak",
+    "quickActions": "Quick Actions",
+    "logMood": "Log Today's Mood",
+    "moodCTA": "How are you feeling?",
+    "talkToAI": "Talk to AI Coach",
+    "aiUnlimited": "Unlimited messages",
+    "aiFree": "5 messages/day",
+    "lifeAreas": "Life Areas",
+    "tapToView": "Tap to view details",
+    "upgradeToPremium": "Upgrade to Premium",
+    "upgradeText": "Unlock unlimited AI messages and goals in all life areas"
+  },
+  "mood": {
+    "title": "Mood & Gratitude",
+    "subtitle": "Track your daily wellbeing",
+    "streak": "Day Streak",
+    "thisWeek": "This Week",
+    "howAreYou": "How are you feeling today?",
+    "verybad": "Very Bad",
+    "bad": "Bad",
+    "okay": "Okay",
+    "good": "Good",
+    "excellent": "Excellent",
+    "notePlaceholder": "How was your day? (optional)",
+    "saveMood": "Save Mood",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "thankYou": "Thank you for tracking your mood",
+    "selectMood": "Please select your mood",
+    "viewHistory": "View History"
+  },
+  "gratitude": {
+    "title": "What are you grateful for?",
+    "subtitle": "Write at least one thing you're grateful for today",
+    "placeholder": "I am grateful for...",
+    "save": "Save Gratitude",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "thankYou": "Your gratitude has been recorded",
+    "enterText": "Please enter something you're grateful for"
+  },
+  "ai": {
+    "title": "AI Wellness Coach",
+    "unlimited": "Unlimited messages",
+    "remaining": "{{count}} messages left today",
+    "welcome": "Hi! I'm your AI Wellness Coach",
+    "intro": "Ask me anything about your wellness journey, goals, or life balance.",
+    "placeholder": "Ask me anything...",
+    "suggestion1": "How can I improve my work-life balance?",
+    "suggestion2": "Help me set a health goal",
+    "limitReached": "Daily limit reached. Upgrade for unlimited access! 💎"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Track your progress",
+    "goalsCompleted": "Goals Completed",
+    "avgMood": "Avg Mood",
+    "streak": "Streak",
+    "gratitude": "Gratitude",
+    "last30Days": "Last 30 days",
+    "days": "days",
+    "entries": "entries",
+    "moodTrend": "Mood Trend",
+    "lifeBalance": "Life Balance Over Time",
+    "goalProgress": "Goal Progress Details",
+    "insights": "AI Insights",
+    "premiumOnly": "Premium Feature",
+    "upgradeForAdvanced": "Upgrade to access advanced analytics and insights",
+    "upgrade": "Upgrade Now",
+    "chartComing": "Chart visualization coming soon",
+    "basicChart": "Basic mood tracking",
+    "balanceChart": "Track balance across all life areas",
+    "detailedProgress": "Detailed progress tracking",
+    "aiInsight": "Your wellness journey is trending positively! Keep up the great work."
+  },
+  "profile": {
+    "title": "Profile",
+    "anonymous": "Anonymous",
+    "premium": "Premium",
+    "free": "Free Plan",
+    "language": "Language",
+    "subscription": "Subscription",
+    "manage": "Manage Subscription",
+    "upgradeToPremium": "Upgrade to Premium",
+    "notifications": "Notifications",
+    "dailyReminders": "Daily Reminders",
+    "weeklyReports": "Weekly Reports",
+    "admin": "Admin",
+    "adminPanel": "Admin Panel",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "version": "Version",
+    "signOut": "Sign Out",
+    "signOutConfirm": "Are you sure you want to sign out?",
+    "manageFailed": "Could not open subscription management"
+  },
+  "lifeArea": {
+    "notFound": "Life area not found",
+    "manageGoals": "Manage your goals"
+  },
+  "goals": {
+    "myGoals": "My Goals",
+    "add": "Add",
+    "noGoals": "No goals yet",
+    "addFirst": "Add your first goal to get started",
+    "titlePlaceholder": "Goal title...",
+    "descriptionPlaceholder": "Description (optional)...",
+    "enterTitle": "Please enter a goal title",
+    "created": "Goal created successfully!",
+    "limitReached": "Free Tier Limit",
+    "upgradeMessage": "Free users can only have goals in one life area. Upgrade to Premium!",
+    "delete": "Delete Goal",
+    "deleteConfirm": "Are you sure you want to delete this goal?"
+  },
+  "paywall": {
+    "title": "Upgrade to Premium",
+    "heroTitle": "Unlock Your Full Potential",
+    "heroText": "Get unlimited access to all features",
+    "aiMessages": "AI Messages",
+    "goalAreas": "Goal Life Areas",
+    "analytics": "Analytics",
+    "notifications": "Notifications",
+    "history": "History",
+    "free": "Free",
+    "premium": "Premium",
+    "perMonth": "/month",
+    "upgrade": "Upgrade Now",
+    "cancel": "Maybe later"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "subtitle": "App management",
+    "totalUsers": "Total Users",
+    "premiumUsers": "Premium",
+    "totalGoals": "Total Goals",
+    "avgMood": "Avg Mood",
+    "quickActions": "Quick Actions",
+    "sendNotification": "Send Broadcast Notification",
+    "exportData": "Export Analytics Data",
+    "systemSettings": "System Settings",
+    "recentActivity": "Recent Activity",
+    "activity1": "12 new users signed up today",
+    "activity2": "3 users upgraded to Premium",
+    "activity3": "89 goals completed today",
+    "sendBroadcast": "Send Broadcast",
+    "broadcastPrompt": "This feature will send notifications to all users.",
+    "broadcastSent": "Broadcast sent!"
+  },
+  "lifeAreas": {
+    "health": "Health",
+    "family": "Family",
+    "career": "Career",
+    "relationships": "Relationships"
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "saving": "Saving...",
+  "delete": "Delete",
+  "send": "Send",
+  "success": "Success",
+  "error": "Error",
+  "on": "On",
+  "off": "Off",
+  "premium": "Premium",
+  "upgrade": "Upgrade"
+}
