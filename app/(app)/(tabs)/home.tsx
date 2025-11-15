@@ -1,26 +1,33 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { colors, typography, spacing, borderRadius, shadows } from '@/lib/theme';
+import { useThemedColors } from '@/hooks/useThemedColors';
+import { spacing, fontSize, fontWeight, radius, shadowPresets, componentSizes } from '@/lib/designSystem';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { MetricCard } from '@/components/MetricCard';
 import { LoadingOverlay } from '@/components/LoadingOverlay';
-import { LifeWheel } from '@/components/LifeWheel';
+import { LifeWheelEnhanced } from '@/components/LifeWheelEnhanced';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useLifeAreas } from '@/hooks/useLifeAreas';
 import { useGoals } from '@/hooks/useGoals';
 import { useMoodEntries } from '@/hooks/useMoodEntries';
 import { useDirection } from '@/hooks/useDirection';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { user, isPremium, loading: userLoading, error: userError } = useCurrentUser();
+  const colors = useThemedColors();
+  const insets = useSafeAreaInsets();
+  const { user, isPremium, loading: userLoading } = useCurrentUser();
   const { activeLifeAreas, loading: areasLoading } = useLifeAreas();
   const { activeGoals } = useGoals();
   const { streak, todayEntry } = useMoodEntries();
   const { isRTL } = useDirection();
+
+  const styles = useMemo(() => createStyles(colors, insets.bottom), [colors, insets.bottom]);
 
   if (userLoading || areasLoading) {
     return <LoadingOverlay />;
@@ -40,113 +47,123 @@ export default function HomeScreen() {
     : 0;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScreenHeader
-        title={t('home.greeting', `Hello, ${user?.full_name || 'Friend'}`)}
-        subtitle={t('home.subtitle', 'How are you feeling today?')}
+        title={t('home.greeting', `${isRTL ? 'שלום' : 'Hi'}, ${user?.full_name || (isRTL ? 'חבר' : 'Friend')}`)}
+        subtitle={t('home.subtitle', isRTL ? 'איך אתה מרגיש היום?' : 'How are you feeling today?')}
       />
 
-      <ScrollView style={styles.content}>
+      <ScrollView 
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Life Wheel */}
         <View style={styles.wheelContainer}>
-          <LifeWheel segments={wheelSegments} size={280} isRTL={isRTL} />
-          <Text style={styles.balanceScore}>
-            {t('home.balanceScore', 'Balance Score')}: <Text style={styles.balanceValue}>{averageBalance}/10</Text>
-          </Text>
+          <LifeWheelEnhanced 
+            segments={wheelSegments} 
+            size={Math.min(SCREEN_WIDTH - 60, 300)} 
+            isRTL={isRTL} 
+          />
+          <View style={styles.balanceScoreContainer}>
+            <Text style={styles.balanceLabel}>
+              {t('home.balanceScore', isRTL ? 'ציון איזון' : 'Balance Score')}
+            </Text>
+            <Text style={styles.balanceValue}>{averageBalance}/10</Text>
+          </View>
         </View>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - 2 Column Grid */}
         <View style={[styles.statsRow, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
-          <MetricCard
-            icon="🎯"
-            title={t('home.activeGoals', 'Active Goals')}
-            value={activeGoals.length}
-          />
-          <MetricCard
-            icon="🔥"
-            title={t('home.moodStreak', 'Day Streak')}
-            value={streak}
-          />
+          <TouchableOpacity 
+            style={[styles.statCard, { backgroundColor: colors.bgCard }]}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.statIcon}>🎯</Text>
+            <Text style={[styles.statValue, { color: colors.brandOrange }]}>{activeGoals.length}</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
+              {t('home.activeGoals', isRTL ? 'יעדים פעילים' : 'Active Goals')}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.statCard, { backgroundColor: colors.bgCard }]}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.statIcon}>🔥</Text>
+            <Text style={[styles.statValue, { color: colors.brandOrange }]}>{streak}</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
+              {t('home.moodStreak', isRTL ? 'רצף ימים' : 'Day Streak')}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { textAlign: isRTL ? 'right' : 'left' }]}>
-            {t('home.quickActions', 'Quick Actions')}
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary, textAlign: isRTL ? 'right' : 'left' }]}>
+            {t('home.quickActions', isRTL ? 'פעולות מהירות' : 'Quick Actions')}
           </Text>
 
           {!todayEntry && (
             <TouchableOpacity
-              style={[styles.actionCard, shadows.md]}
+              style={[styles.actionCard, { backgroundColor: colors.bgCard }]}
               onPress={() => router.push('/(app)/(tabs)/mood')}
+              activeOpacity={0.7}
             >
               <Text style={styles.actionIcon}>😊</Text>
-              <View style={styles.actionContent}>
-                <Text style={styles.actionTitle}>{t('home.logMood', 'Log Today\'s Mood')}</Text>
-                <Text style={styles.actionSubtitle}>{t('home.moodCTA', 'How are you feeling?')}</Text>
+              <View style={[styles.actionContent, { alignItems: isRTL ? 'flex-end' : 'flex-start' }]}>
+                <Text style={[styles.actionTitle, { color: colors.textPrimary }]}>
+                  {t('home.logMood', isRTL ? 'רשום מצב רוח' : "Log Today's Mood")}
+                </Text>
+                <Text style={[styles.actionSubtitle, { color: colors.textSecondary }]}>
+                  {t('home.moodCTA', isRTL ? 'איך אתה מרגיש?' : 'How are you feeling?')}
+                </Text>
               </View>
+              <Text style={[styles.actionChevron, { color: colors.textTertiary }]}>{isRTL ? '←' : '→'}</Text>
             </TouchableOpacity>
           )}
 
           <TouchableOpacity
-            style={[styles.actionCard, shadows.md]}
+            style={[styles.actionCard, { backgroundColor: colors.bgCard }]}
             onPress={() => router.push('/(app)/(tabs)/ai')}
+            activeOpacity={0.7}
           >
             <Text style={styles.actionIcon}>🤖</Text>
-            <View style={styles.actionContent}>
-              <Text style={styles.actionTitle}>{t('home.talkToAI', 'Talk to AI Coach')}</Text>
-              <Text style={styles.actionSubtitle}>
+            <View style={[styles.actionContent, { alignItems: isRTL ? 'flex-end' : 'flex-start' }]}>
+              <Text style={[styles.actionTitle, { color: colors.textPrimary }]}>
+                {t('home.talkToAI', isRTL ? 'שוחח עם המאמן AI' : 'Talk to AI Coach')}
+              </Text>
+              <Text style={[styles.actionSubtitle, { color: colors.textSecondary }]}>
                 {isPremium 
-                  ? t('home.aiUnlimited', 'Unlimited messages')
-                  : t('home.aiFree', '5 messages/day')}
+                  ? t('home.aiUnlimited', isRTL ? 'הודעות ללא הגבלה' : 'Unlimited messages')
+                  : t('home.aiFree', isRTL ? '5 הודעות ליום' : '5 messages/day')}
               </Text>
             </View>
+            <Text style={[styles.actionChevron, { color: colors.textTertiary }]}>{isRTL ? '←' : '→'}</Text>
           </TouchableOpacity>
-        </View>
-
-        {/* Life Areas Summary */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { textAlign: isRTL ? 'right' : 'left' }]}>
-            {t('home.lifeAreas', 'Life Areas')}
-          </Text>
-
-          {activeLifeAreas.map((area) => (
-            <TouchableOpacity
-              key={area.id}
-              style={[styles.areaCard, shadows.sm]}
-              onPress={() => router.push(`/(app)/life-area/${area.id}`)}
-            >
-              <View style={[styles.areaColor, { backgroundColor: area.color_hex }]} />
-              <View style={styles.areaContent}>
-                <Text style={styles.areaTitle}>
-                  {isRTL ? area.name_he : area.name_en}
-                </Text>
-                <Text style={styles.areaSubtitle}>
-                  {t('home.tapToView', 'Tap to view details')}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
         </View>
 
         {!isPremium && (
           <TouchableOpacity
-            style={[styles.upgradeCard, shadows.lg]}
+            style={[styles.upgradeCard, { backgroundColor: colors.brandOrange }]}
             onPress={() => router.push('/(app)/paywall')}
+            activeOpacity={0.8}
           >
             <Text style={styles.upgradeEmoji}>💎</Text>
-            <Text style={styles.upgradeTitle}>{t('home.upgradeToPremium', 'Upgrade to Premium')}</Text>
-            <Text style={styles.upgradeText}>
-              {t('home.upgradeText', 'Unlock unlimited AI messages and goals in all life areas')}
+            <Text style={[styles.upgradeTitle, { color: colors.white }]}>
+              {t('home.upgradeToPremium', isRTL ? 'שדרג לפרימיום' : 'Upgrade to Premium')}
+            </Text>
+            <Text style={[styles.upgradeText, { color: colors.white }]}>
+              {t('home.upgradeText', isRTL ? 'פתח הודעות AI ללא הגבלה ויעדים בכל תחומי החיים' : 'Unlock unlimited AI messages and goals in all life areas')}
             </Text>
           </TouchableOpacity>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, bottomInset: number) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bgPrimary,
@@ -154,106 +171,120 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: Math.max(bottomInset, spacing.xl) + spacing.xl,
+  },
   wheelContainer: {
     alignItems: 'center',
-    paddingVertical: spacing.xl,
+    paddingVertical: spacing.xxl,
+    paddingHorizontal: spacing.xl,
   },
-  balanceScore: {
-    ...typography.body,
-    color: colors.textSecondary,
+  balanceScoreContainer: {
+    alignItems: 'center',
     marginTop: spacing.lg,
   },
+  balanceLabel: {
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.medium,
+    color: colors.textSecondary,
+    marginBottom: spacing.xs,
+  },
   balanceValue: {
-    ...typography.h2,
+    fontSize: fontSize.xxxl,
+    fontWeight: fontWeight.bold,
     color: colors.brandOrange,
-    fontWeight: '700',
   },
   statsRow: {
-    paddingHorizontal: spacing.lg,
+    flexDirection: 'row',
+    paddingHorizontal: spacing.xl,
     gap: spacing.md,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.xxl,
+  },
+  statCard: {
+    flex: 1,
+    height: componentSizes.cardHeight.sm,
+    borderRadius: radius.xl,
+    padding: spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadowPresets.md,
+  },
+  statIcon: {
+    fontSize: componentSizes.iconSize.lg,
+    marginBottom: spacing.xs,
+  },
+  statValue: {
+    fontSize: fontSize.xxl,
+    fontWeight: fontWeight.bold,
+    marginBottom: spacing.xxs,
+  },
+  statLabel: {
+    fontSize: fontSize.xs,
+    fontWeight: fontWeight.medium,
+    textAlign: 'center',
   },
   section: {
-    paddingHorizontal: spacing.lg,
-    marginBottom: spacing.xl,
+    paddingHorizontal: spacing.xl,
+    marginBottom: spacing.xxl,
   },
   sectionTitle: {
-    ...typography.h2,
-    color: colors.textPrimary,
+    fontSize: fontSize.xl,
+    fontWeight: fontWeight.bold,
     marginBottom: spacing.md,
   },
   actionCard: {
-    backgroundColor: colors.bgCard,
-    borderRadius: borderRadius.lg,
+    height: componentSizes.cardHeight.md,
+    borderRadius: radius.xl,
     padding: spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: spacing.md,
+    ...shadowPresets.sm,
   },
   actionIcon: {
-    fontSize: 48,
+    fontSize: componentSizes.iconSize.xl,
     marginRight: spacing.lg,
   },
   actionContent: {
     flex: 1,
   },
   actionTitle: {
-    ...typography.h3,
-    color: colors.textPrimary,
-    marginBottom: spacing.xs,
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.semibold,
+    marginBottom: spacing.xxs,
   },
   actionSubtitle: {
-    ...typography.caption,
-    color: colors.textSecondary,
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.regular,
   },
-  areaCard: {
-    backgroundColor: colors.bgCard,
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  areaColor: {
-    width: 4,
-    height: 40,
-    borderRadius: 2,
-    marginRight: spacing.md,
-  },
-  areaContent: {
-    flex: 1,
-  },
-  areaTitle: {
-    ...typography.body,
-    color: colors.textPrimary,
-    fontWeight: '600',
-  },
-  areaSubtitle: {
-    ...typography.caption,
-    color: colors.textSecondary,
+  actionChevron: {
+    fontSize: fontSize.xxl,
+    marginLeft: spacing.sm,
   },
   upgradeCard: {
-    backgroundColor: colors.brandOrange,
-    marginHorizontal: spacing.lg,
+    marginHorizontal: spacing.xl,
     marginBottom: spacing.xxl,
-    borderRadius: borderRadius.xl,
-    padding: spacing.xl,
+    borderRadius: radius.xxl,
+    padding: spacing.xxl,
     alignItems: 'center',
+    ...shadowPresets.xl,
   },
   upgradeEmoji: {
-    fontSize: 48,
+    fontSize: componentSizes.iconSize.xxl,
     marginBottom: spacing.md,
   },
   upgradeTitle: {
-    ...typography.h2,
-    color: colors.white,
+    fontSize: fontSize.xl,
+    fontWeight: fontWeight.bold,
     marginBottom: spacing.sm,
+    textAlign: 'center',
   },
   upgradeText: {
-    ...typography.body,
-    color: colors.white,
+    fontSize: fontSize.md,
+    fontWeight: fontWeight.regular,
     textAlign: 'center',
-    opacity: 0.9,
+    opacity: 0.95,
+    lineHeight: fontSize.md * 1.5,
   },
 });
 
