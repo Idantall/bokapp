@@ -1,4 +1,6 @@
-// Generate Goal Suggestions Edge Function
+// AI Goal Suggestions Edge Function
+// Generates SMART goal suggestions using OpenAI for a specific life area
+
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -14,16 +16,15 @@ const corsHeaders = {
 interface GoalSuggestionRequest {
   lifeAreaId: string;
   language: 'he' | 'en';
-  currentRating?: number;
-  description?: string;
+  currentScore?: number; // Optional: current rating of this life area (0-10)
+  userContext?: string; // Optional: additional context from user
 }
 
 interface GoalSuggestion {
   title: string;
   description: string;
-  goal_type: 'boolean' | 'numeric' | 'habit';
-  target_value?: number;
-  unit?: string;
+  category: 'short_term' | 'medium_term' | 'long_term';
+  estimatedDuration: string; // e.g., "1 week", "3 months", "1 year"
 }
 
 serve(async (req) => {
@@ -52,9 +53,11 @@ serve(async (req) => {
       throw new Error('Invalid authorization token');
     }
 
+    const userId = user.id;
+
     // Parse request body
     const body: GoalSuggestionRequest = await req.json();
-    const { lifeAreaId, language, currentRating, description } = body;
+    const { lifeAreaId, language, currentScore, userContext } = body;
 
     if (!lifeAreaId || !language) {
       throw new Error('Missing required fields: lifeAreaId, language');
@@ -63,7 +66,7 @@ serve(async (req) => {
     // Get life area details
     const { data: lifeAreaData, error: lifeAreaError } = await supabase
       .from('life_areas')
-      .select('key, name_en, name_he, description_en, description_he')
+      .select('name_en, name_he, key')
       .eq('id', lifeAreaId)
       .single();
 
@@ -71,24 +74,60 @@ serve(async (req) => {
       throw new Error('Life area not found');
     }
 
-    const areaName = language === 'he' ? lifeAreaData.name_he : lifeAreaData.name_en;
-    const areaDescription =
-      language === 'he' ? lifeAreaData.description_he : lifeAreaData.description_en;
+    const lifeAreaName = language === 'he' ? lifeAreaData.name_he : lifeAreaData.name_en;
+
+    // Get user's existing goals for this area to avoid duplicates
+    const { data: existingGoals } = await supabase
+      .from('goals')
+      .select('title')
+      .eq('user_id', userId)
+      .eq('life_area_id', lifeAreaId)
+      .in('status', ['active', 'in_progress']);
+
+    const existingGoalTitles = existingGoals?.map(g => g.title).join(', ') || 'None';
 
     // Build prompt for OpenAI
-    const systemPrompt =
-      language === 'he'
-        ? `אתה מאמן wellness מקצועי. צור 3-5 המלצות ליעדים SMART בתחום חיים של "${areaName}" (${areaDescription}). ${
-            currentRating !== undefined ? `הדירוג הנוכחי: ${currentRating}/5.` : ''
-          } ${description ? `הקשר נוסף: ${description}` : ''}`
-        : `You are a professional wellness coach. Create 3-5 SMART goal suggestions for the life area "${areaName}" (${areaDescription}). ${
-            currentRating !== undefined ? `Current rating: ${currentRating}/5.` : ''
-          } ${description ? `Additional context: ${description}` : ''}`;
+    const systemPrompt = language === 'he'
+      ? `אתה מאמן wellness מקצועי. צור 3 הצעות יעדים SMART עבור תחום החיים "${lifeAreaName}". כל יעד צריך להיות:
+- Specific (ספציפי)
+- Measurable (מדיד)
+- Achievable (בר-השגה)
+- Relevant (רלוונטי)
+- Time-bound (מוגבל בזמן)
 
-    const userPrompt =
-      language === 'he'
-        ? 'צור רשימה של 3-5 יעדים ברורים ומדידים. עבור כל יעד, כלול: כותרת (title), תיאור (description), סוג יעד (goal_type: boolean/numeric/habit), ערך יעד אופציונלי (target_value), ויחידת מידה אופציונלית (unit). החזר תשובה ב-JSON בלבד.'
-        : 'Create a list of 3-5 clear, measurable goals. For each goal include: title, description, goal_type (boolean/numeric/habit), optional target_value, and optional unit. Return JSON only.';
+החזר את התשובה כ-JSON array עם המבנה:
+[
+  {
+    "title": "כותרת קצרה (מקסימום 60 תווים)",
+    "description": "תיאור מפורט של היעד וכיצד למדוד הצלחה",
+    "category": "short_term" או "medium_term" או "long_term",
+    "estimatedDuration": "למשל: '2 שבועות', '3 חודשים', 'שנה'"
+  }
+]
+
+יעדים קיימים של המשתמש (אל תשכפל): ${existingGoalTitles}
+${currentScore !== undefined ? `דירוג נוכחי של תחום זה: ${currentScore}/10` : ''}
+${userContext ? `הקשר נוסף: ${userContext}` : ''}`
+      : `You are a professional wellness coach. Create 3 SMART goal suggestions for the life area "${lifeAreaName}". Each goal should be:
+- Specific
+- Measurable
+- Achievable
+- Relevant
+- Time-bound
+
+Return the response as a JSON array with the structure:
+[
+  {
+    "title": "Short title (max 60 characters)",
+    "description": "Detailed description of the goal and how to measure success",
+    "category": "short_term" or "medium_term" or "long_term",
+    "estimatedDuration": "e.g., '2 weeks', '3 months', '1 year'"
+  }
+]
+
+User's existing goals (don't duplicate): ${existingGoalTitles}
+${currentScore !== undefined ? `Current rating for this area: ${currentScore}/10` : ''}
+${userContext ? `Additional context: ${userContext}` : ''}`;
 
     // Call OpenAI Chat Completions API
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -98,65 +137,75 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini', // Fast and cost-effective
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
+          {
+            role: 'system',
+            content: systemPrompt,
+          },
+          {
+            role: 'user',
+            content: language === 'he'
+              ? `צור 3 הצעות יעדים עבור ${lifeAreaName}`
+              : `Generate 3 goal suggestions for ${lifeAreaName}`,
+          },
         ],
         temperature: 0.7,
-        max_tokens: 1000,
+        response_format: { type: 'json_object' },
       }),
     });
 
     if (!openAIResponse.ok) {
       const errorText = await openAIResponse.text();
-      console.error('OpenAI API error:', errorText);
-      
-      // If OpenAI is not available, return fallback suggestions
-      return new Response(
-        JSON.stringify({
-          suggestions: getFallbackSuggestions(lifeAreaData.key, language),
-          fallback: true,
-        }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      throw new Error(`OpenAI API error: ${errorText}`);
     }
 
     const openAIResult = await openAIResponse.json();
-    const aiResponse = openAIResult.choices[0].message.content;
+    const aiMessage = openAIResult.choices[0].message.content;
 
-    // Parse JSON response
-    let suggestions: GoalSuggestion[] = [];
+    // Parse AI response
+    let suggestions: GoalSuggestion[];
     try {
-      // Try to extract JSON from response
-      const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
-      if (jsonMatch) {
-        suggestions = JSON.parse(jsonMatch[0]);
-      } else {
-        suggestions = JSON.parse(aiResponse);
-      }
+      const parsed = JSON.parse(aiMessage);
+      // Handle both array and object with array
+      suggestions = Array.isArray(parsed) ? parsed : (parsed.goals || parsed.suggestions || []);
     } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
-      // Return fallback suggestions
-      suggestions = getFallbackSuggestions(lifeAreaData.key, language);
+      // Fallback parsing
+      suggestions = [{
+        title: language === 'he' ? 'יעד לדוגמה' : 'Example Goal',
+        description: aiMessage.substring(0, 200),
+        category: 'medium_term',
+        estimatedDuration: language === 'he' ? '1 חודש' : '1 month',
+      }];
     }
 
+    // Ensure we have at least 1 suggestion
+    if (!suggestions || suggestions.length === 0) {
+      throw new Error('No suggestions generated');
+    }
+
+    // Return suggestions
     return new Response(
-      JSON.stringify({ suggestions }),
+      JSON.stringify({
+        success: true,
+        lifeArea: lifeAreaName,
+        suggestions: suggestions.slice(0, 3), // Max 3 suggestions
+        tokensUsed: openAIResult.usage?.total_tokens || 0,
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );
   } catch (error) {
-    console.error('Goal Suggestions Error:', error);
+    console.error('Goal Suggestion Error:', error);
 
-    const errorMessage =
-      error instanceof Error ? error.message : 'An unknown error occurred';
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
 
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ 
+        success: false,
+        error: errorMessage 
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -164,86 +213,3 @@ serve(async (req) => {
     );
   }
 });
-
-// Fallback suggestions when OpenAI is not available
-function getFallbackSuggestions(lifeAreaKey: string, language: 'he' | 'en'): GoalSuggestion[] {
-  const suggestions: Record<string, { en: GoalSuggestion[]; he: GoalSuggestion[] }> = {
-    health: {
-      en: [
-        {
-          title: 'Exercise 3 times per week',
-          description: 'Regular physical activity for 30 minutes',
-          goal_type: 'habit',
-        },
-        {
-          title: 'Sleep 8 hours nightly',
-          description: 'Maintain consistent sleep schedule',
-          goal_type: 'numeric',
-          target_value: 8,
-          unit: 'hours',
-        },
-        {
-          title: 'Eat 5 servings of vegetables daily',
-          description: 'Increase vegetable intake',
-          goal_type: 'numeric',
-          target_value: 5,
-          unit: 'servings',
-        },
-      ],
-      he: [
-        {
-          title: 'להתאמן 3 פעמים בשבוע',
-          description: 'פעילות גופנית סדירה למשך 30 דקות',
-          goal_type: 'habit',
-        },
-        {
-          title: 'לישון 8 שעות בלילה',
-          description: 'לשמור על לוח שינה קבוע',
-          goal_type: 'numeric',
-          target_value: 8,
-          unit: 'שעות',
-        },
-        {
-          title: 'לאכול 5 מנות ירקות ביום',
-          description: 'להגדיל צריכת ירקות',
-          goal_type: 'numeric',
-          target_value: 5,
-          unit: 'מנות',
-        },
-      ],
-    },
-    career: {
-      en: [
-        {
-          title: 'Learn a new professional skill',
-          description: 'Complete an online course or certification',
-          goal_type: 'boolean',
-        },
-        {
-          title: 'Network with 10 professionals',
-          description: 'Expand professional network',
-          goal_type: 'numeric',
-          target_value: 10,
-          unit: 'people',
-        },
-      ],
-      he: [
-        {
-          title: 'ללמוד מיומנות מקצועית חדשה',
-          description: 'להשלים קורס מקוון או הסמכה',
-          goal_type: 'boolean',
-        },
-        {
-          title: 'ליצור קשר עם 10 אנשי מקצוע',
-          description: 'להרחיב רשת מקצועית',
-          goal_type: 'numeric',
-          target_value: 10,
-          unit: 'אנשים',
-        },
-      ],
-    },
-  };
-
-  return suggestions[lifeAreaKey]?.[language] || [];
-}
-
