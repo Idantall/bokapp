@@ -22,6 +22,7 @@ interface LifeWheelSegment {
   name_he: string;
   color: string;
   score: number; // 0-10
+  hasGoals?: boolean; // If true, show vibrant; if false, show hazy
 }
 
 interface LifeWheelProps {
@@ -139,7 +140,9 @@ export function LifeWheelEnhanced({
       : segment.name_en.split(' ')[0].substring(0, 8);
 
     const isPressed = pressedSegment === segment.id;
-    const segmentOpacity = isPressed ? 1 : 0.9;
+    // Hazy (0.4) for unconfigured, vibrant (0.95) for configured
+    const baseOpacity = segment.hasGoals ? 0.95 : 0.4;
+    const segmentOpacity = isPressed ? 1 : baseOpacity;
 
     return (
       <G key={segment.id}>
@@ -149,7 +152,7 @@ export function LifeWheelEnhanced({
           fill={segment.color}
           opacity={segmentOpacity}
           stroke="white"
-          strokeWidth={3}
+          strokeWidth={4}
           onPress={() => handleSegmentPress(segment)}
         />
 
@@ -158,10 +161,11 @@ export function LifeWheelEnhanced({
           x={labelPos.x}
           y={labelPos.y}
           fill="white"
-          fontSize={13}
-          fontWeight="600"
+          fontSize={14}
+          fontWeight={segment.hasGoals ? "700" : "500"}
           textAnchor="middle"
           alignmentBaseline="middle"
+          opacity={segment.hasGoals ? 1 : 0.7}
           onPress={() => handleSegmentPress(segment)}
         >
           {displayName}

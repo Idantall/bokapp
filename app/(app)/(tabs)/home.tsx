@@ -34,13 +34,23 @@ export default function HomeScreen() {
   }
 
   // Calculate average score for the wheel
-  const wheelSegments = activeLifeAreas.map(area => ({
-    id: area.id,
-    name_en: area.name_en,
-    name_he: area.name_he,
-    color: area.color_hex,
-    score: Math.floor(Math.random() * 10) + 1, // TODO: Get from progress_entries
-  }));
+  // Check which areas have goals
+  const goalsPerArea = activeGoals.reduce((acc, goal) => {
+    acc[goal.life_area_id] = (acc[goal.life_area_id] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const wheelSegments = activeLifeAreas.map(area => {
+    const hasGoals = goalsPerArea[area.id] > 0;
+    return {
+      id: area.id,
+      name_en: area.name_en,
+      name_he: area.name_he,
+      color: area.color_hex,
+      score: Math.floor(Math.random() * 10) + 1, // TODO: Get from progress_entries
+      hasGoals, // Used for vibrant vs hazy display
+    };
+  });
 
   const averageBalance = wheelSegments.length > 0
     ? Math.round(wheelSegments.reduce((sum, s) => sum + s.score, 0) / wheelSegments.length)
@@ -49,8 +59,8 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScreenHeader
-        title={t('home.greeting', `${isRTL ? 'שלום' : 'Hi'}, ${user?.full_name || (isRTL ? 'חבר' : 'Friend')}`)}
-        subtitle={t('home.subtitle', isRTL ? 'איך אתה מרגיש היום?' : 'How are you feeling today?')}
+        title={`${isRTL ? 'שלום' : 'Hi'}, ${user?.full_name || (isRTL ? 'חבר' : 'Friend')}`}
+        subtitle={isRTL ? 'איך אתה מרגיש היום?' : 'How are you feeling today?'}
       />
 
       <ScrollView 
@@ -62,7 +72,7 @@ export default function HomeScreen() {
         <View style={styles.wheelContainer}>
           <LifeWheelEnhanced 
             segments={wheelSegments} 
-            size={Math.min(SCREEN_WIDTH - 60, 300)} 
+            size={Math.min(SCREEN_WIDTH - 40, 340)} 
             isRTL={isRTL} 
           />
           <View style={styles.balanceScoreContainer}>
